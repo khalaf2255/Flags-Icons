@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Testimonial Carousel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *::selection {
+        background-color: rgba(255, 0, 0, 0);
+      }
+      body {
+        font-family: "Tajawal", sans-serif;
+      }
+      #carousel {
+        margin-top: 40px;
+        margin-bottom: -405px;
+      }
+
+      .flag-item {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        margin-left: -40px;
+        transform-origin: center bottom;
+        transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s;
+      }
+
+      .flag-item img {
+        transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1),
+          opacity 0.5s ease-out, filter 1s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .flag-item.animating {
+        transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s;
+        z-index: 100 !important;
+      }
+
+      .flag-item.animating img {
+        transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+          filter 1.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-fade-in {
+        animation: fade-in 0.5s ease-out forwards;
+      }
+      .text_image {
+        position: absolute;
+        bottom: -20px;
+        background-color: #fff;
+        color: #333;
+        border-radius: 15px;
+        width: 80%;
+        padding: 13px 9px;
+        border: 3px solid #6dc0bf;
+      }
+      .image_box {
+        position: relative;
+      }
+      .image_box img {
+        box-shadow: 2px 2px 10px gray !important;
+      }
+      .text_fontsize {
+        font-size: 1.375rem;
+        line-height: 1.25rem;
+      }
+      [style="transform: rotate(0deg) translateY(-520px); z-index: 10;"] img {
+        filter: unset !important;
+      }
+
+      /* Popup button style */
+      .Popup_button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        transition: 0.5s;
+        transform: scale(1);
+        z-index: 99;
+        cursor: pointer;
+        font-size: 17px;
+      }
+      .Popup_button:hover {
+        transform: scale(1.1);
+      }
+
+      /* Popup body style */
+      .popup_body {
+        position: fixed;
+        top: 0;
+        background-color: #06040490;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+        transition: 0.5s;
+        display: none;
+        z-index: 9999;
+      }
+
+      /* Popup close button style */
+      .closePopupBtn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 99;
+        background-color: #fff;
+        padding: 5px;
+        border-radius: 50%;
+        width: 33px;
+        height: 33px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+      /* Popup content style */
+
+      .popup_content {
+        position: relative;
+        background-color: rgb(90 202 204);
+        margin: 5rem;
+        /* width: 100%; */
+        /* height: 95vh; */
+        padding: 20px;
+        overflow: auto;
+        display: flex;
+        align-items: center;
+        border-radius: 10px;
+        justify-content: center;
+      }
+      .popup_content video {
+        border-radius: 15px;
+      }
+      .popup_content p {
+        font-size: 30px;
+      }
+      .popup_overlay {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      #img-final {
+        /* cursor: pointer; */
+      }
+      @media (max-width: 1100px) {
+        #carousel {
+          scale: 0.8;
+        }
+      }
+      @media (max-width: 900px) {
+        #carousel {
+          scale: 0.7;
+        }
+        #testimonial-details {
+          scale: 0.8;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .flag-item {
+          margin-left: -30px;
+        }
+        .text-sm {
+          font-size: 0.675rem !important;
+        }
+        #carousel {
+          scale: 0.85;
+          margin-bottom: 80px !important;
+        }
+        #testimonial-details {
+          margin-top: -215px;
+        }
+        .text_image {
+          width: 90%;
+          font-size: 13px;
+          padding: 5px 1px;
+        }
+        .popup_content {
+          min-width: 350px;
+          min-height: auto;
+          margin: 0 9px;
+          /* height: 300px; */
+          padding: 20px;
+        }
+      }
+      .inset-0 {
+        overflow: initial;
+      }
+      @media (min-width: 1420px) {
+        .popup_content {
+          height: 90vh;
+        }
+        .popup_content video {
+          /* width: 100%; */
+          height: 100%;
+        }
+      }
+
+      @media (max-width: 500px) {
+        #carousel {
+          scale: 0.65;
+          margin-top: 10px !important;
+          margin-bottom: 30px !important;
+        }
+      }
+      #img-final:hover {
+        cursor: url("images/video.png"), auto !important;
+      }
+      /*END Popup Code*/
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-b from-[#F0FAFA] to-[#E0F5F5] min-h-screen text-gray-800 flex flex-col items-center justify-center p-4"
+  >
+    <div class="popup_body">
+      <div class="popup_overlay"></div>
+      <div class="popup_content">
+        <div class="closePopupBtn">❌</div>
+
+        <video
+          src="1- مقدمة كورس الووردبريس المستوى التاني.mp4"
+          controls
+        ></video>
+      </div>
+    </div>
+    <main
+      class="w-full max-w-6xl mx-auto flex flex-col items-center text-center"
+    >
+      <h1
+        class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#005D67] mb-2 leading-tight"
+      >
+        ماذا يقول الأهالي عن رحلتهم مع "تعلّم مع فارس"؟
+      </h1>
+
+      <!-- Carousel for Flags -->
+      <div id="carousel" class="relative w-full h-[280px] md:h-[600px]">
+        <svg
+          class="absolute inset-0 w-full h-full pointer-events-none"
+          style="z-index: 0"
+        >
+          <path
+            id="arc-path"
+            fill="none"
+            stroke="#A7DEDD"
+            stroke-width="8"
+            d="M 305.5407686390609 247.5306673712942 A 280 280 0 0 1 846.4592313609392 247.5306673712942"
+          ></path>
+        </svg>
+        <div id="flag-container" class="absolute inset-0">
+          <!-- Flags will be injected here by JS -->
+        </div>
+      </div>
+
+      <!-- Testimonial Details -->
+      <div
+        id="testimonial-details"
+        class="w-full flex flex-col items-center gap-4"
+      >
+        <div id="stars-container" class="flex gap-1">
+          <!-- Stars will be injected here by JS -->
+        </div>
+
+        <h2
+          id="testimonial-name"
+          class="text-2xl md:text-3xl font-bold text-gray-900"
+        >
+          <!-- Name and country will be injected here -->
+        </h2>
+
+        <div class="grid grid-cols-3 gap-3 md:gap-3 mt-4 w-full max-w-2xl">
+          <div class="flex flex-col items-center gap-2 image_box">
+            <img
+              id="img-before"
+              src=""
+              alt="قبل"
+              class="rounded-xl shadow-lg w-full max-w-[150px] md:max-w-[200px] object-cover aspect-[9/16]"
+              loading="lazy"
+            />
+            <span class="text_fontsize font-bold text_image">قبل</span>
+          </div>
+          <div class="flex flex-col items-center gap-2 image_box">
+            <img
+              id="img-after"
+              src=""
+              alt="بعد"
+              class="rounded-xl shadow-lg w-full max-w-[150px] md:max-w-[200px] object-cover aspect-[9/16]"
+              loading="lazy"
+            />
+            <span class="text_fontsize font-bold text_image">بعد</span>
+          </div>
+          <div class="flex flex-col items-center gap-2 image_box">
+            <img
+              id="img-final"
+              src=""
+              alt="النتيجة النهائي"
+              class="rounded-xl shadow-lg w-full max-w-[150px] md:max-w-[200px] object-cover aspect-[9/16]"
+              loading="lazy"
+            />
+            <span class="text_fontsize font-bold text_image"
+              >النتيجة النهائي</span
+            >
+          </div>
+        </div>
+      </div>
+      <p class="text-1xl md:text-3xl font-bold text-[#005D67] mt-12">
+        في 3 أسابيع فقط... تغير كل شيء
+      </p>
+    </main>
+
+    <script>
+      function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+        const angleInRadians = (angleInDegrees * Math.PI) / 180.0;
+        return {
+          x: centerX + radius * Math.sin(angleInRadians),
+          y: centerY - radius * Math.cos(angleInRadians),
+        };
+      }
+
+      function describeArc(x, y, radius, startAngle, endAngle) {
+        const start = polarToCartesian(x, y, radius, startAngle);
+        const end = polarToCartesian(x, y, radius, endAngle);
+        const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+        const sweepFlag = 1;
+
+        const d = [
+          "M",
+          start.x,
+          start.y,
+          "A",
+          radius,
+          radius,
+          0,
+          largeArcFlag,
+          sweepFlag,
+          end.x,
+          end.y,
+        ].join(" ");
+        return d;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const testimonialsData = [
+          {
+            id: 1,
+            country: "الكويت",
+            countryCode: "images/kw.png",
+            name: "محمد",
+          },
+          {
+            id: 2,
+            country: "السعودية",
+            countryCode: "images/sa.png",
+            name: "فاطمة",
+          },
+          { id: 3, country: "قطر", countryCode: "images/qa.png", name: "علي" },
+          {
+            id: 4,
+            country: "البحرين",
+            countryCode: "images/bh.png",
+            name: "سارة",
+          },
+          {
+            id: 5,
+            country: "عمان",
+            countryCode: "images/om.png",
+            name: "يوسف",
+          },
+          { id: 6, country: "مصر", countryCode: "images/eg.png", name: "هنا" },
+          {
+            id: 7,
+            country: "ألمانيا",
+            countryCode: "images/de.png",
+            name: "كلاوس",
+          },
+          {
+            id: 8,
+            country: "إسبانيا",
+            countryCode: "images/es.png",
+            name: "ماريا",
+          },
+          {
+            id: 9,
+            country: "الإمارات",
+            countryCode: "images/ae.png",
+            name: "أحمد",
+          },
+          {
+            id: 10,
+            country: "الأردن",
+            countryCode: "images/jo.png",
+            name: "لمى",
+          },
+          {
+            id: 11,
+            country: "لبنان",
+            countryCode: "images/lb.png",
+            name: "جورج",
+          },
+          {
+            id: 12,
+            country: "المغرب",
+            countryCode: "images/ma.png",
+            name: "ليلى",
+          },
+          {
+            id: 13,
+            country: "تونس",
+            countryCode: "images/tn.png",
+            name: "أمين",
+          },
+          {
+            id: 14,
+            country: "الجزائر",
+            countryCode: "images/dz.png",
+            name: "نورة",
+          },
+          {
+            id: 15,
+            country: "تركيا",
+            countryCode: "images/tr.png",
+            name: "عمر",
+          },
+          {
+            id: 16,
+            country: "فرنسا",
+            countryCode: "images/fr.png",
+            name: "صوفي",
+          },
+          {
+            id: 17,
+            country: "إيطاليا",
+            countryCode: "images/it.png",
+            name: "ماريو",
+          },
+          {
+            id: 18,
+            country: "المملكة المتحدة",
+            countryCode: "images/gb.png",
+            name: "أوليفر",
+          },
+          {
+            id: 19,
+            country: "الولايات المتحدة",
+            countryCode: "images/us.png",
+            name: "إيما",
+          },
+          {
+            id: 20,
+            country: "كندا",
+            countryCode: "images/ca.png",
+            name: "نواه",
+          },
+        ];
+
+        let activeIndex = 0;
+        const carousel = document.getElementById("carousel");
+        const flagContainer = document.getElementById("flag-container");
+        const testimonialDetails = document.getElementById(
+          "testimonial-details"
+        );
+        const testimonialName = document.getElementById("testimonial-name");
+        const starsContainer = document.getElementById("stars-container");
+        const imgBefore = document.getElementById("img-before");
+        const imgAfter = document.getElementById("img-after");
+        const imgFinal = document.getElementById("img-final");
+        const arcPath = document.getElementById("arc-path");
+
+        const VISIBLE_FLAGS = 7;
+        const TOTAL_ARC_DEGREES = 120;
+        const SPREAD_MULTIPLIER = 1;
+
+        function updateUI() {
+          updateCarousel();
+          if (!isDown) {
+            updateTestimonialDetails();
+          }
+        }
+
+        function updateCarousel() {
+          flagContainer.innerHTML = "";
+
+          const carouselWidth = carousel.offsetWidth;
+          const carouselHeight = carousel.offsetHeight;
+
+          const standardFlagSize = window.innerWidth < 768 ? 60 : 80;
+          const activeFlagSize = standardFlagSize * 1.5;
+
+          const flagBottomRadius = carouselHeight - activeFlagSize / 2 - 20;
+          const translateYValue = flagBottomRadius;
+
+          const lineRadius = flagBottomRadius + standardFlagSize / 2;
+
+          const SPREAD_DEGREES = TOTAL_ARC_DEGREES * SPREAD_MULTIPLIER;
+          const startAngle = -SPREAD_DEGREES / 2;
+          const endAngle = SPREAD_DEGREES / 2;
+          const centerX = carouselWidth / 2;
+          const centerY = carouselHeight;
+
+          const pathData = describeArc(
+            centerX,
+            centerY,
+            lineRadius,
+            startAngle,
+            endAngle
+          );
+          if (arcPath) {
+            arcPath.setAttribute("d", pathData);
+          }
+
+          const pixelToDegreeFactor = 0.2;
+          const rotationOffset = isDown ? dragOffset * pixelToDegreeFactor : 0;
+
+          const flagsToDisplay = [];
+          const offset = Math.floor(VISIBLE_FLAGS / 2);
+
+          for (let i = 0; i < VISIBLE_FLAGS; i++) {
+            const dataIndex =
+              (activeIndex - offset + i + testimonialsData.length) %
+              testimonialsData.length;
+            flagsToDisplay.push({
+              ...testimonialsData[dataIndex],
+              originalIndex: dataIndex,
+              displayIndex: i,
+            });
+          }
+
+          flagsToDisplay.forEach((flag) => {
+            const flagWrapper = document.createElement("div");
+            flagWrapper.className = "flag-item";
+
+            const baseAngle =
+              (flag.displayIndex / (VISIBLE_FLAGS - 1)) * SPREAD_DEGREES -
+              SPREAD_DEGREES / 2;
+            const finalAngle = baseAngle - rotationOffset;
+
+            flagWrapper.style.transform = `rotate(${finalAngle}deg) translateY(-${translateYValue}px)`;
+
+            const centerProximity = Math.max(
+              0,
+              1 - Math.abs(finalAngle) / (SPREAD_DEGREES / 1.5)
+            );
+
+            const scale = 0.75 + 0.5 * centerProximity;
+            const blurAmount = (1 - centerProximity) * 2.5;
+            const activeBorderColor = "#5acacc";
+            const inactiveBorderColor = "#A7DEDD";
+            const borderColor =
+              centerProximity > 0.85 ? activeBorderColor : inactiveBorderColor;
+            const borderWidth = 3 + Math.floor(3 * centerProximity);
+
+            flagWrapper.style.zIndex = Math.floor(1 + 9 * centerProximity);
+
+            const img = document.createElement("img");
+            img.src = `${flag.countryCode}`;
+            img.alt = flag.country;
+            img.className =
+              "w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-white shadow-lg cursor-pointer";
+
+            img.style.filter = `blur(${blurAmount + 1}px ) `;
+            img.style.transform = `scale(${scale}) rotate(-${finalAngle}deg)`;
+            img.style.boxShadow = `0 0 0 ${8}px ${borderColor}`;
+
+            // if (isDown) {
+            //   flagWrapper.style.transition = "none";
+            //   img.style.transition = "none";
+            // }
+
+            img.addEventListener("click", () => {
+              if (
+                !isDown &&
+                activeIndex !== flag.originalIndex &&
+                !isAnimating
+              ) {
+                isAnimating = true;
+
+                // حساب عدد الخطوات للوصول للمنتصف
+                const stepsNeeded =
+                  flag.displayIndex - Math.floor(VISIBLE_FLAGS / 2);
+                const direction = stepsNeeded > 0 ? 1 : -1;
+                const totalSteps = Math.abs(stepsNeeded);
+
+                // تحريك الأعلام خطوة بخطوة
+                let currentStep = 0;
+                const animationInterval = setInterval(() => {
+                  if (currentStep < totalSteps) {
+                    activeIndex =
+                      (activeIndex + direction + testimonialsData.length) %
+                      testimonialsData.length;
+                    updateCarousel();
+                    currentStep++;
+                  } else {
+                    clearInterval(animationInterval);
+                    setTimeout(() => {
+                      isAnimating = false;
+                      updateTestimonialDetails();
+                    }, 200);
+                  }
+                }, 150);
+              }
+            });
+
+            flagWrapper.appendChild(img);
+            flagContainer.appendChild(flagWrapper);
+          });
+        }
+
+        function updateTestimonialDetails() {
+          if (testimonialDetails.classList.contains("animate-fade-in")) return;
+
+          testimonialDetails.classList.remove("animate-fade-in");
+          void testimonialDetails.offsetWidth;
+          testimonialDetails.classList.add("animate-fade-in");
+
+          const activeTestimonial = testimonialsData[activeIndex];
+          testimonialName.textContent = `الطفل ${activeTestimonial.name} - ${activeTestimonial.country}`;
+          imgBefore.src = `https://picsum.photos/seed/${activeTestimonial.id}-before/300/500`;
+          imgAfter.src = `https://picsum.photos/seed/${activeTestimonial.id}-after/300/500`;
+          imgFinal.src = `https://picsum.photos/seed/${activeTestimonial.id}-final/300/500`;
+
+          setTimeout(() => {
+            testimonialDetails.classList.remove("animate-fade-in");
+          }, 500);
+        }
+
+        function createStars() {
+          starsContainer.innerHTML = "";
+          const starSvg = `<svg class="w-7 h-7 md:w-8 md:h-8 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>`;
+          for (let i = 0; i < 5; i++) {
+            starsContainer.innerHTML += starSvg;
+          }
+        }
+
+        let isDown = false;
+        let startX;
+        let startIndexOnDown;
+        let dragOffset = 0;
+        let didMove = false;
+        let isAnimating = false;
+
+        const startDrag = (e) => {
+          isDown = true;
+          carousel.classList.add("active:cursor-grabbing");
+          startX = (e.pageX || e.touches[0].pageX) - carousel.offsetLeft;
+          startIndexOnDown = activeIndex;
+          dragOffset = 0;
+          didMove = false;
+        };
+
+        const endDrag = () => {
+          if (!isDown) return;
+          isDown = false;
+          carousel.classList.remove("active:cursor-grabbing");
+
+          if (!didMove) {
+            return;
+          }
+
+          const SPREAD_DEGREES = TOTAL_ARC_DEGREES * SPREAD_MULTIPLIER;
+          const pixelToDegreeFactor = 0.2;
+          const rotationInDegrees = dragOffset * pixelToDegreeFactor;
+          const anglePerFlag = SPREAD_DEGREES / (VISIBLE_FLAGS - 1);
+          const indexChange = -Math.round(rotationInDegrees / anglePerFlag);
+
+          const len = testimonialsData.length;
+          activeIndex = (((startIndexOnDown + indexChange) % len) + len) % len;
+
+          dragOffset = 0;
+          updateUI();
+          updateTestimonialDetails();
+        };
+
+        const doDrag = (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          didMove = true;
+          const x = (e.pageX || e.touches[0].pageX) - carousel.offsetLeft;
+          const walk = x - startX;
+          dragOffset = walk;
+          updateCarousel();
+        };
+
+        createStars();
+        updateUI();
+
+        window.addEventListener("resize", updateUI);
+      });
+    </script>
+
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+      integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      window.onload = function () {
+        // Variables
+        let Popup_button = document.getElementById("img-final");
+        let closePopupBtn = document.querySelector(".closePopupBtn");
+        let popup_overlay = document.querySelector(".popup_overlay");
+        let popup_content = document.querySelector(".popup_content");
+        let popup_body = document.querySelector(".popup_body");
+
+        $(Popup_button).on("click", function () {
+          popup_body.style.opacity = 1;
+          setTimeout(() => {
+            popup_body.style.display = "flex";
+          }, 550);
+        });
+
+        // Close popup
+        [closePopupBtn, popup_overlay].forEach((el) => {
+          el.onclick = function () {
+            popup_body.style.opacity = 0;
+            setTimeout(() => {
+              popup_body.style.display = "none";
+            }, 550);
+          };
+        });
+      };
+    </script>
+  </body>
+</html>
