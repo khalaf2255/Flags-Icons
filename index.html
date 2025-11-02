@@ -115,7 +115,7 @@
         opacity: 1;
         transition: 0.5s;
         display: none;
-        z-index: 99999999999999999999;
+        z-index: 9999;
       }
 
       /* Popup close button style */
@@ -123,6 +123,15 @@
         position: absolute;
         top: 10px;
         right: 10px;
+        z-index: 99;
+        background-color: #fff;
+        padding: 5px;
+        border-radius: 50%;
+        width: 33px;
+        height: 33px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         cursor: pointer;
       }
       /* Popup content style */
@@ -130,10 +139,9 @@
       .popup_content {
         position: relative;
         background-color: rgb(90 202 204);
-        min-width: 1000px;
-        min-height: 700px;
-        width: 900px;
-        height: 700px;
+        margin: 5rem;
+        /* width: 100%; */
+        /* height: 95vh; */
         padding: 20px;
         overflow: auto;
         display: flex;
@@ -142,8 +150,7 @@
         justify-content: center;
       }
       .popup_content video {
-        width: 100%;
-        height: auto;
+        border-radius: 15px;
       }
       .popup_content p {
         font-size: 30px;
@@ -155,6 +162,22 @@
         top: 0;
         left: 0;
       }
+      #img-final {
+        /* cursor: pointer; */
+      }
+      @media (max-width: 1100px) {
+        #carousel {
+          scale: 0.8;
+        }
+      }
+      @media (max-width: 900px) {
+        #carousel {
+          scale: 0.7;
+        }
+        #testimonial-details {
+          scale: 0.8;
+        }
+      }
 
       @media (max-width: 767px) {
         .flag-item {
@@ -164,8 +187,7 @@
           font-size: 0.675rem !important;
         }
         #carousel {
-          scale: 0.65;
-          margin-top: -20px;
+          scale: 0.85;
           margin-bottom: 80px !important;
         }
         #testimonial-details {
@@ -180,16 +202,37 @@
           min-width: 350px;
           min-height: auto;
           margin: 0 9px;
-          height: 300px;
+          /* height: 300px; */
           padding: 20px;
         }
       }
-  #img-final {
-    transition: .5s;
-  }
+      .inset-0 {
+        overflow: initial;
+      }
+      @media (min-width: 1420px) {
+        .popup_content {
+          height: 90vh;
+        }
+        .popup_content video {
+          /* width: 100%; */
+          height: 100%;
+        }
+      }
+
+      @media (max-width: 500px) {
+        #carousel {
+          scale: 0.65;
+          margin-top: 10px !important;
+          margin-bottom: 30px !important;
+        }
+      }
+
+      #img-final {
+        transition: 0.5s;
+      }
       #img-final:hover {
         background-color: #5acacc;
-        padding:  10px;
+        padding: 10px;
         cursor: url("./images/3.png"), auto !important;
       }
       /*END Popup Code*/
