@@ -30,23 +30,20 @@
         left: 50%;
         margin-left: -40px;
         transform-origin: center bottom;
-        transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1), 
-                    z-index 0s;
+        transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s;
       }
 
       .flag-item img {
         transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1),
-          opacity 0.5s ease-out, 
-          filter 1s cubic-bezier(0.34, 1.56, 0.64, 1),
+          opacity 0.5s ease-out, filter 1s cubic-bezier(0.34, 1.56, 0.64, 1),
           box-shadow 1s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
-      
+
       .flag-item.animating {
-        transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), 
-                    z-index 0s;
+        transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s;
         z-index: 100 !important;
       }
-      
+
       .flag-item.animating img {
         transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1),
           filter 1.2s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -158,9 +155,6 @@
         top: 0;
         left: 0;
       }
-      #img-final {
-        cursor: pointer;
-      }
 
       @media (max-width: 767px) {
         .flag-item {
@@ -190,6 +184,14 @@
           padding: 20px;
         }
       }
+  #img-final {
+    transition: .5s;
+  }
+      #img-final:hover {
+        background-color: #5acacc;
+        padding:  10px;
+        cursor: url("./images/3.png"), auto !important;
+      }
       /*END Popup Code*/
     </style>
   </head>
@@ -201,10 +203,7 @@
       <div class="popup_content">
         <div class="closePopupBtn">❌</div>
 
-        <video
-          src="video.mp4"
-          controls
-        ></video>
+        <video src="video.mp4" controls></video>
       </div>
     </div>
     <main
@@ -470,19 +469,26 @@
             }
 
             img.addEventListener("click", () => {
-              if (!isDown && activeIndex !== flag.originalIndex && !isAnimating) {
+              if (
+                !isDown &&
+                activeIndex !== flag.originalIndex &&
+                !isAnimating
+              ) {
                 isAnimating = true;
-                
+
                 // حساب عدد الخطوات للوصول للمنتصف
-                const stepsNeeded = flag.displayIndex - Math.floor(VISIBLE_FLAGS / 2);
+                const stepsNeeded =
+                  flag.displayIndex - Math.floor(VISIBLE_FLAGS / 2);
                 const direction = stepsNeeded > 0 ? 1 : -1;
                 const totalSteps = Math.abs(stepsNeeded);
-                
+
                 // تحريك الأعلام خطوة بخطوة
                 let currentStep = 0;
                 const animationInterval = setInterval(() => {
                   if (currentStep < totalSteps) {
-                    activeIndex = (activeIndex + direction + testimonialsData.length) % testimonialsData.length;
+                    activeIndex =
+                      (activeIndex + direction + testimonialsData.length) %
+                      testimonialsData.length;
                     updateCarousel();
                     currentStep++;
                   } else {
